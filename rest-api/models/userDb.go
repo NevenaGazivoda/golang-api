@@ -11,28 +11,23 @@ import (
 var DB *sql.DB
 
 type User struct {
-	Name string `json:"name"`
-	Surname string `json:"surname"`
-	Email string `json:"email"`
-	Password string `json:"password"`
-}
-type User1 struct {
 	Pk_UserId string `json:"pk_UserId"`
 	Name string `json:"name"`
 	Surname string `json:"surname"`
 	Email string `json:"email"`
 	Password string `json:"password"`
 }
+
 type Users []User
 
-func UpdateUser (us User1) () {
+func UpdateUser (us User) () {
 	query := fmt.Sprintf("UPDATE `Users` SET `Name`= '%s', `Surname`= '%s', `Email` = '%s' WHERE Pk_UserId= %s", us.Name, us.Surname, us.Email,us.Pk_UserId)
 	_, err := DB.Query(query)
 	if err != nil {
 		panic(err.Error())
 	}
 }
-func UpdateUserPass (us User1) () {
+func UpdateUserPass (us User) () {
 	hash := md5.Sum([]byte(us.Password))
 	hashedPass := hex.EncodeToString(hash[:])
 	query := fmt.Sprintf("UPDATE `Users` SET `Password` = '%s' WHERE Pk_UserId= %s", hashedPass,us.Pk_UserId)
@@ -82,14 +77,14 @@ func OneUser(email string, password string)(User)  {
 
 func OneUserById(id string)(User)  {
 
-	results, err := DB.Query("SELECT Name, Surname, Email, Password FROM `users` WHERE Pk_UserId = ?", id)
+	results, err := DB.Query("SELECT Pk_UserId, Name, Surname, Email, Password FROM `users` WHERE Pk_UserId = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
 	var us User
 	for results.Next() {
 
-		err = results.Scan(&us.Name, &us.Surname, &us.Email, &us.Password)
+		err = results.Scan(&us.Pk_UserId, &us.Name, &us.Surname, &us.Email, &us.Password)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -100,7 +95,7 @@ func OneUserById(id string)(User)  {
 
 func AllUsers ()([]User, error)  {
 
-	results, err := DB.Query("SELECT Name, Surname, Email, Password from Users")
+	results, err := DB.Query("SELECT Pk_UserId, Name, Surname, Email, Password from Users")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -110,7 +105,7 @@ func AllUsers ()([]User, error)  {
 	for results.Next() {
 		var us User
 
-		err = results.Scan(&us.Name, &us.Surname, &us.Email, &us.Password)
+		err = results.Scan(&us.Pk_UserId, &us.Name, &us.Surname, &us.Email, &us.Password)
 		if err != nil {
 			panic(err.Error())
 		}

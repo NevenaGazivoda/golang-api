@@ -6,11 +6,6 @@ import (
 )
 
 type Reply struct {
-	Text string `json:"text"`
-	Fk_UserId string `json:"fk_UserId"`
-	Fk_QuestionId string `json:"fk_QuestionId"`
-}
-type Reply1 struct {
 	Pk_ReplyId string `json:"pk_ReplyId"`
 	Text string `json:"text"`
 	Fk_UserId string `json:"fk_UserId"`
@@ -20,7 +15,7 @@ type Replies []Reply
 
 func AllReplies ()([]Reply, error)  {
 
-	results, err := DB.Query("SELECT Text, Fk_UserId, Fk_QuestionId from Replies")
+	results, err := DB.Query("SELECT Pk_ReplyId, Text, Fk_UserId, Fk_QuestionId from Replies")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -30,7 +25,7 @@ func AllReplies ()([]Reply, error)  {
 	for results.Next() {
 		var rep Reply
 
-		err = results.Scan(&rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId)
+		err = results.Scan(&rep.Pk_ReplyId, &rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -58,7 +53,7 @@ func NewReply (rep Reply) () {
 		panic(err.Error())
 	}
 }
-func UpdateReply (rep Reply1) () {
+func UpdateReply (rep Reply) () {
 	query := fmt.Sprintf("UPDATE `replies` SET `Text`= '%s', `Fk_UserId`= '%s',`Fk_QuestionId`='%s' WHERE Pk_ReplyId= %s", rep.Text, rep.Fk_UserId, rep.Fk_QuestionId, rep.Pk_ReplyId)
 	_, err := DB.Query(query)
 	if err != nil {

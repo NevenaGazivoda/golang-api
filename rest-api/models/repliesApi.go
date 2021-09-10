@@ -38,7 +38,7 @@ func CreateNewReply(w http.ResponseWriter, r *http.Request) {
 }
 func UpdateReplyApi(w http.ResponseWriter, r *http.Request)  {
 
-	var rep Reply1
+	var rep Reply
 	_ = json.NewDecoder(r.Body).Decode(&rep)
 
 	UpdateReply(rep)

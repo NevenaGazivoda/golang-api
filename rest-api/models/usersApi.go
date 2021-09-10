@@ -36,7 +36,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request)  {
 
 func UpdateUserApi(w http.ResponseWriter, r *http.Request)  {
 
-	var us User1
+	var us User
 	_ = json.NewDecoder(r.Body).Decode(&us)
 
 	UpdateUser(us)
@@ -45,7 +45,7 @@ func UpdateUserApi(w http.ResponseWriter, r *http.Request)  {
 }
 func UpdateUserPasApi(w http.ResponseWriter, r *http.Request)  {
 
-	var us User1
+	var us User
 	_ = json.NewDecoder(r.Body).Decode(&us)
 
 	UpdateUserPass(us)

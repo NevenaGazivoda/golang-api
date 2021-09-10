@@ -6,19 +6,16 @@ import (
 )
 
 type Question struct {
-	Text string `json:"text"`
-	Fk_UserId string `json:"fk_UserId"`
-}
-type Question1 struct {
 	Pk_QuestionId string `json:"pk_QuestionId"`
 	Text string `json:"text"`
 	Fk_UserId string `json:"fk_UserId"`
 }
+
 type Questions []Question
 
 func AllQuestions ()([]Question, error)  {
 
-	results, err := DB.Query("SELECT Text, Fk_UserId from Questions")
+	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -28,7 +25,7 @@ func AllQuestions ()([]Question, error)  {
 	for results.Next() {
 		var quest Question
 
-		err = results.Scan(&quest.Text, &quest.Fk_UserId)
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -56,7 +53,7 @@ func NewQuestion (quest Question) () {
 		panic(err.Error())
 	}
 }
-func UpdateQuestion (quest Question1) () {
+func UpdateQuestion (quest Question) () {
 	query := fmt.Sprintf("UPDATE `Questions` SET `Text`= '%s', `Fk_UserId`= '%s' WHERE Pk_QuestionId= %s", quest.Text, quest.Fk_UserId, quest.Pk_QuestionId)
 	_, err := DB.Query(query)
 	if err != nil {

@@ -38,7 +38,7 @@ func CreateNewQuestion(w http.ResponseWriter, r *http.Request) {
 }
 func UpdateQuestionApi(w http.ResponseWriter, r *http.Request)  {
 
-	var quest Question1
+	var quest Question
 	_ = json.NewDecoder(r.Body).Decode(&quest)
 
 	UpdateQuestion(quest)
