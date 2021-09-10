@@ -23,6 +23,8 @@ func handleRequests() {
 	myRouter.HandleFunc("/users", models.UpdateUserApi).Methods("PUT")
 	myRouter.HandleFunc("/users/password", models.UpdateUserPasApi).Methods("PUT")
 	myRouter.HandleFunc("/questions", models.QuestionsIndex).Methods("GET")
+	myRouter.HandleFunc("/questions/hot", models.HotQuestionsApi).Methods("GET")
+	myRouter.HandleFunc("/questions/paging/{n}", models.QuestionsPagingApi).Methods("GET")
 	myRouter.HandleFunc("/questions", models.CreateNewQuestion).Methods("POST")
 	myRouter.HandleFunc("/questions/{id}", models.DeleteFromQuestions).Methods("DELETE")
 	myRouter.HandleFunc("/questions", models.UpdateQuestionApi).Methods("PUT")
@@ -30,6 +32,8 @@ func handleRequests() {
 	myRouter.HandleFunc("/replies", models.CreateNewReply).Methods("POST")
 	myRouter.HandleFunc("/replies/{id}", models.DeleteFromReplies).Methods("DELETE")
 	myRouter.HandleFunc("/replies", models.UpdateReplyApi).Methods("PUT")
+	myRouter.HandleFunc("/usersquestions", models.CreateReaction).Methods("POST")
+	myRouter.HandleFunc("/usersreplies", models.InsertNewReaction).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8082", myRouter))
 }
 func main() {

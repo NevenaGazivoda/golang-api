@@ -6,10 +6,32 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func QuestionsIndex(w http.ResponseWriter, r *http.Request)  {
 	Questions, err := AllQuestions()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(Questions)
+}
+func HotQuestionsApi(w http.ResponseWriter, r *http.Request)  {
+	Questions, err := HotQuestions()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(Questions)
+}
+func QuestionsPagingApi(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	n, err := strconv.Atoi(vars["n"])
+
+	Questions, err := QuestionPaging(n)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)

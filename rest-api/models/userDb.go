@@ -65,7 +65,6 @@ func OneUser(email string, password string)(User)  {
 	var us User
 	for results.Next() {
 
-
 		err = results.Scan(&us.Name, &us.Surname, &us.Email, &us.Password)
 		if err != nil {
 			panic(err.Error())
