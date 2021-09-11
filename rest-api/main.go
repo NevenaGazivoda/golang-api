@@ -34,11 +34,12 @@ func handleRequests() {
 	myRouter.HandleFunc("/questions", models.UpdateQuestionApi).Methods("PUT")
 
 	myRouter.HandleFunc("/replies", models.RepliesIndex).Methods("GET")
+	myRouter.HandleFunc("/reply/{id}", models.GetReplyByIdApi).Methods("GET")
 	myRouter.HandleFunc("/replies/{id}", models.GetRepliesByQuestionId).Methods("GET")
 	myRouter.HandleFunc("/replies", models.CreateNewReply).Methods("POST")
 	myRouter.HandleFunc("/replies/{id}", models.DeleteFromReplies).Methods("DELETE")
 	myRouter.HandleFunc("/replies", models.UpdateReplyApi).Methods("PUT")
-	
+
 	myRouter.HandleFunc("/usersquestions", models.CreateReaction).Methods("POST")
 	myRouter.HandleFunc("/usersreplies", models.InsertNewReaction).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8082", myRouter))

@@ -28,6 +28,13 @@ func GetRepliesByQuestionId(w http.ResponseWriter, r *http.Request)  {
 	}
 	json.NewEncoder(w).Encode(Replies)
 }
+func GetReplyByIdApi(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+
+	id:= vars["id"]
+
+	json.NewEncoder(w).Encode(ReplyById(id))
+}
 func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 
