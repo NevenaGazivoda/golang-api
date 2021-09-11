@@ -1,18 +1,19 @@
-package models
+package controllers
 
 import (
 	"encoding/json"
 	"net/http"
+	"rest/models"
 )
 
 func CreateReaction(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	var reac UserQuestion
+	var reac models.UserQuestion
 	_ = json.NewDecoder(r.Body).Decode(&reac)
 
-	InsertReaction(reac)
+	models.InsertReaction(reac)
 
 	json.NewEncoder(w).Encode(reac)
 }

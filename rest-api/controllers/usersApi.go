@@ -1,4 +1,4 @@
-package models
+package controllers
 
 import (
 	"encoding/json"
@@ -6,10 +6,11 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"rest/models"
 )
 
 func UsersIndex(w http.ResponseWriter, r *http.Request)  {
-	Users, err := AllUsers()
+	Users, err := models.AllUsers()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)
@@ -18,7 +19,7 @@ func UsersIndex(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Users)
 }
 func HotUsersApi(w http.ResponseWriter, r *http.Request)  {
-	Users, err := HotUsers()
+	Users, err := models.HotUsers()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)
@@ -31,7 +32,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request)  {
 	email:= vars["email"]
 	password:= vars["password"]
 
-	json.NewEncoder(w).Encode(OneUser(email,password))
+	json.NewEncoder(w).Encode(models.OneUser(email,password))
 }
 
 
@@ -39,25 +40,25 @@ func GetUserById(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 	id:= vars["id"]
 
-	json.NewEncoder(w).Encode(OneUserById(id))
+	json.NewEncoder(w).Encode(models.OneUserById(id))
 }
 
 
 func UpdateUserApi(w http.ResponseWriter, r *http.Request)  {
 
-	var us User
+	var us models.User
 	_ = json.NewDecoder(r.Body).Decode(&us)
 
-	UpdateUser(us)
+	models.UpdateUser(us)
 
 	json.NewEncoder(w).Encode(us)
 }
 func UpdateUserPasApi(w http.ResponseWriter, r *http.Request)  {
 
-	var us User
+	var us models.User
 	_ = json.NewDecoder(r.Body).Decode(&us)
 
-	UpdateUserPass(us)
+	models.UpdateUserPass(us)
 
 	json.NewEncoder(w).Encode(us)
 }
@@ -66,16 +67,16 @@ func DeleteFromUsers(w http.ResponseWriter, r *http.Request)  {
 
 	id:= vars["id"]
 
-	DeleteUser(id)
+	models.DeleteUser(id)
 }
 func CreateNewUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	var us User
+	var us models.User
 	_ = json.NewDecoder(r.Body).Decode(&us)
 
-	NewUser(us)
+	models.NewUser(us)
 
 	json.NewEncoder(w).Encode(us)
 }

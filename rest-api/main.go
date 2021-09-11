@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"rest/controllers"
 )
 import (
 	"rest/models"
@@ -15,33 +16,33 @@ import (
 func handleRequests() {
 
 	myRouter := mux.NewRouter().StrictSlash(true)
-	myRouter.HandleFunc("/users", models.UsersIndex).Methods("GET")
-	myRouter.HandleFunc("/users/hot", models.HotUsersApi).Methods("GET")
-	myRouter.HandleFunc("/users/{email}/{password}", models.LoginUser).Methods("GET")
-	myRouter.HandleFunc("/users/{id}", models.GetUserById).Methods("GET")
-	myRouter.HandleFunc("/users", models.CreateNewUser).Methods("POST")
-	myRouter.HandleFunc("/users/{id}", models.DeleteFromUsers).Methods("DELETE")
-	myRouter.HandleFunc("/users", models.UpdateUserApi).Methods("PUT")
-	myRouter.HandleFunc("/users/password", models.UpdateUserPasApi).Methods("PUT")
+	myRouter.HandleFunc("/users", controllers.UsersIndex).Methods("GET")
+	myRouter.HandleFunc("/users/hot", controllers.HotUsersApi).Methods("GET")
+	myRouter.HandleFunc("/users/{email}/{password}", controllers.LoginUser).Methods("GET")
+	myRouter.HandleFunc("/users/{id}", controllers.GetUserById).Methods("GET")
+	myRouter.HandleFunc("/users", controllers.CreateNewUser).Methods("POST")
+	myRouter.HandleFunc("/users/{id}", controllers.DeleteFromUsers).Methods("DELETE")
+	myRouter.HandleFunc("/users", controllers.UpdateUserApi).Methods("PUT")
+	myRouter.HandleFunc("/users/password", controllers.UpdateUserPasApi).Methods("PUT")
 
-	myRouter.HandleFunc("/questions", models.QuestionsIndex).Methods("GET")
-	myRouter.HandleFunc("/questions/{id}", models.GetQuestionById).Methods("GET")
-	myRouter.HandleFunc("/questions/hot", models.HotQuestionsApi).Methods("GET")
-	myRouter.HandleFunc("/questions/paging/{n}", models.QuestionsPagingApi).Methods("GET")
-	myRouter.HandleFunc("/questions/{id}/{n}", models.GetQuestionsByUserIdApi).Methods("GET")
-	myRouter.HandleFunc("/questions", models.CreateNewQuestion).Methods("POST")
-	myRouter.HandleFunc("/questions/{id}", models.DeleteFromQuestions).Methods("DELETE")
-	myRouter.HandleFunc("/questions", models.UpdateQuestionApi).Methods("PUT")
+	myRouter.HandleFunc("/questions", controllers.QuestionsIndex).Methods("GET")
+	myRouter.HandleFunc("/questions/{id}", controllers.GetQuestionById).Methods("GET")
+	myRouter.HandleFunc("/questions/hot", controllers.HotQuestionsApi).Methods("GET")
+	myRouter.HandleFunc("/questions/paging/{n}", controllers.QuestionsPagingApi).Methods("GET")
+	myRouter.HandleFunc("/questions/{id}/{n}", controllers.GetQuestionsByUserIdApi).Methods("GET")
+	myRouter.HandleFunc("/questions", controllers.CreateNewQuestion).Methods("POST")
+	myRouter.HandleFunc("/questions/{id}", controllers.DeleteFromQuestions).Methods("DELETE")
+	myRouter.HandleFunc("/questions", controllers.UpdateQuestionApi).Methods("PUT")
 
-	myRouter.HandleFunc("/replies", models.RepliesIndex).Methods("GET")
-	myRouter.HandleFunc("/reply/{id}", models.GetReplyByIdApi).Methods("GET")
-	myRouter.HandleFunc("/replies/{id}", models.GetRepliesByQuestionId).Methods("GET")
-	myRouter.HandleFunc("/replies", models.CreateNewReply).Methods("POST")
-	myRouter.HandleFunc("/replies/{id}", models.DeleteFromReplies).Methods("DELETE")
-	myRouter.HandleFunc("/replies", models.UpdateReplyApi).Methods("PUT")
+	myRouter.HandleFunc("/replies", controllers.RepliesIndex).Methods("GET")
+	myRouter.HandleFunc("/reply/{id}", controllers.GetReplyByIdApi).Methods("GET")
+	myRouter.HandleFunc("/replies/{id}", controllers.GetRepliesByQuestionId).Methods("GET")
+	myRouter.HandleFunc("/replies", controllers.CreateNewReply).Methods("POST")
+	myRouter.HandleFunc("/replies/{id}", controllers.DeleteFromReplies).Methods("DELETE")
+	myRouter.HandleFunc("/replies", controllers.UpdateReplyApi).Methods("PUT")
 
-	myRouter.HandleFunc("/usersquestions", models.CreateReaction).Methods("POST")
-	myRouter.HandleFunc("/usersreplies", models.InsertNewReaction).Methods("POST")
+	myRouter.HandleFunc("/usersquestions", controllers.CreateReaction).Methods("POST")
+	myRouter.HandleFunc("/usersreplies", controllers.InsertNewReaction).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8082", myRouter))
 }
 func main() {

@@ -1,4 +1,4 @@
-package models
+package controllers
 
 import (
 	"encoding/json"
@@ -6,10 +6,11 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"rest/models"
 )
 
 func RepliesIndex(w http.ResponseWriter, r *http.Request)  {
-	Replies, err := AllReplies()
+	Replies, err := models.AllReplies()
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)
@@ -20,7 +21,7 @@ func RepliesIndex(w http.ResponseWriter, r *http.Request)  {
 func GetRepliesByQuestionId(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 	id:= vars["id"]
-	Replies, err := RepliesByQuestionId(id)
+	Replies, err := models.RepliesByQuestionId(id)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)
@@ -33,32 +34,32 @@ func GetReplyByIdApi(w http.ResponseWriter, r *http.Request)  {
 
 	id:= vars["id"]
 
-	json.NewEncoder(w).Encode(ReplyById(id))
+	json.NewEncoder(w).Encode(models.ReplyById(id))
 }
 func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 
 	id:= vars["id"]
 
-	DeleteReply(id)
+	models.DeleteReply(id)
 }
 func CreateNewReply(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	var rep Reply
+	var rep models.Reply
 	_ = json.NewDecoder(r.Body).Decode(&rep)
 
-	NewReply(rep)
+	models.NewReply(rep)
 
 	json.NewEncoder(w).Encode(rep)
 }
 func UpdateReplyApi(w http.ResponseWriter, r *http.Request)  {
 
-	var rep Reply
+	var rep models.Reply
 	_ = json.NewDecoder(r.Body).Decode(&rep)
 
-	UpdateReply(rep)
+	models.UpdateReply(rep)
 
 	json.NewEncoder(w).Encode(rep)
 }
