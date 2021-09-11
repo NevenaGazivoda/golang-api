@@ -11,6 +11,14 @@ type Reply struct {
 	Fk_UserId string `json:"fk_UserId"`
 	Fk_QuestionId string `json:"fk_QuestionId"`
 }
+type ReplyWithReaction struct {
+	Pk_ReplyId string `json:"pk_ReplyId"`
+	Text string `json:"text"`
+	Fk_UserId string `json:"fk_UserId"`
+	Fk_QuestionId string `json:"fk_QuestionId"`
+	Positive string `json:"positive"`
+	Negative string `json:"negative"`
+}
 type Replies []Reply
 
 func AllReplies ()([]Reply, error)  {
@@ -37,17 +45,19 @@ func AllReplies ()([]Reply, error)  {
 	}
 	return Replies, err
 }
-func RepliesByQuestionId(id string)([]Reply, error)  {
+func RepliesByQuestionId(id string)([]ReplyWithReaction, error)  {
 
-	results, err := DB.Query("SELECT Pk_ReplyId, Text, Fk_UserId, Fk_QuestionId FROM `replies` WHERE Fk_QuestionId = ?", id)
+	results, err := DB.Query("SELECT r.Pk_ReplyId, r.Text, r.Fk_UserId, r.Fk_QuestionId, SUM(IF(u.Reaction = 1, 1, 0)) AS positive, " +
+		"SUM(IF(u.Reaction = 0, 1, 0)) AS negative FROM replies as r JOIN usersreplies as u " +
+		"ON u.Fk_ReplyId=r.Pk_ReplyId WHERE Fk_QuestionId = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	var Replies []Reply
+	var Replies []ReplyWithReaction
 	for results.Next() {
-		var rep Reply
-		err = results.Scan(&rep.Pk_ReplyId, &rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId)
+		var rep ReplyWithReaction
+		err = results.Scan(&rep.Pk_ReplyId, &rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId, &rep.Positive, &rep.Negative)
 		if err != nil {
 			panic(err.Error())
 		}

@@ -10,6 +10,13 @@ type Question struct {
 	Text string `json:"text"`
 	Fk_UserId string `json:"fk_UserId"`
 }
+type QuestionWithLikes struct {
+	Pk_QuestionId string `json:"pk_QuestionId"`
+	Text string `json:"text"`
+	Fk_UserId string `json:"fk_UserId"`
+	Positive string `json:"positive"`
+	Negative string `json:"negative"`
+}
 type QuestionHot struct {
 	Pk_QuestionId string `json:"pk_QuestionId"`
 	Text string `json:"text"`
@@ -85,19 +92,23 @@ func QuestionById(id string)(Question)  {
 	}
 	return quest
 }
-func QuestionPaging (n int)([]Question, error)  {
+func QuestionPaging (n int)([]QuestionWithLikes, error)  {
 
-	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions ORDER BY Pk_QuestionId DESC LIMIT ? OFFSET ?", paging,(n-1)*5)
+	results, err := DB.Query("SELECT q.Pk_QuestionId, q.Text, q.Fk_UserId, SUM(IF(up.Reaction = 1, 1, 0)) AS positive, " +
+		"SUM(IF(up.Reaction = 0, 1, 0)) AS negative FROM Questions AS q " +
+		"LEFT JOIN usersquestions AS up ON q.Pk_QuestionId = up.Fk_QuestionId " +
+		"GROUP BY q.Pk_QuestionId, q.Text, q.Fk_UserId " +
+		"ORDER BY Pk_QuestionId DESC LIMIT ? OFFSET ?", paging,(n-1)*5)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	var Questions []Question
+	var Questions []QuestionWithLikes
 
 	for results.Next()	{
-		var quest Question
+		var quest QuestionWithLikes
 
-		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId, &quest.Positive, &quest.Negative)
 		if err != nil {
 			panic(err.Error())
 		}
