@@ -37,6 +37,27 @@ func AllReplies ()([]Reply, error)  {
 	}
 	return Replies, err
 }
+func RepliesByQuestionId(id string)([]Reply, error)  {
+
+	results, err := DB.Query("SELECT Pk_ReplyId, Text, Fk_UserId, Fk_QuestionId FROM `replies` WHERE Fk_QuestionId = ?", id)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var Replies []Reply
+	for results.Next() {
+		var rep Reply
+		err = results.Scan(&rep.Pk_ReplyId, &rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId)
+		if err != nil {
+			panic(err.Error())
+		}
+		Replies = append(Replies, rep)
+		if err = results.Err(); err != nil {
+			return nil, err
+		}
+	}
+	return Replies, err
+}
 func DeleteReply(id string)()  {
 	_, err := DB.Query("DELETE FROM `Replies` WHERE Pk_ReplyId = ?", id)
 	if err != nil {

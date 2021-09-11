@@ -17,6 +17,12 @@ type User struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 }
+type HotUser struct {
+	Pk_UserId string `json:"pk_UserId"`
+	Name string `json:"name"`
+	Surname string `json:"surname"`
+	CommentCount string `json:"comment_count"`
+}
 
 type Users []User
 
@@ -105,6 +111,32 @@ func AllUsers ()([]User, error)  {
 		var us User
 
 		err = results.Scan(&us.Pk_UserId, &us.Name, &us.Surname, &us.Email, &us.Password)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		Users = append(Users, us)
+	}
+	if err = results.Err(); err != nil {
+		return nil, err
+	}
+	return Users, err
+}
+func HotUsers ()([]HotUser, error)  {
+
+	results, err := DB.Query("SELECT u.Pk_UserId, u.Name, u.Surname, COUNT(r.Pk_ReplyId) as Hotest " +
+		"FROM users AS u JOIN replies AS r ON u.Pk_UserId = r.Fk_UserId " +
+		"GROUP BY u.Pk_UserId, u.Name, u.Surname ORDER BY hotest DESC LIMIT 5 OFFSET 0")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var Users []HotUser
+
+	for results.Next() {
+		var us HotUser
+
+		err = results.Scan(&us.Pk_UserId, &us.Name, &us.Surname, &us.CommentCount)
 		if err != nil {
 			panic(err.Error())
 		}

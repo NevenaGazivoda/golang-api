@@ -27,11 +27,31 @@ func HotQuestionsApi(w http.ResponseWriter, r *http.Request)  {
 	}
 	json.NewEncoder(w).Encode(Questions)
 }
+func GetQuestionById(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	id:= vars["id"]
+
+	json.NewEncoder(w).Encode(QuestionById(id))
+}
 func QuestionsPagingApi(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 	n, err := strconv.Atoi(vars["n"])
 
 	Questions, err := QuestionPaging(n)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(Questions)
+}
+func GetQuestionsByUserIdApi(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+
+	id:= vars["id"]
+	n, err := strconv.Atoi(vars["n"])
+
+	Questions, err := GetQuestionsByUserId(id,n)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)

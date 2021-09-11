@@ -17,6 +17,15 @@ func UsersIndex(w http.ResponseWriter, r *http.Request)  {
 	}
 	json.NewEncoder(w).Encode(Users)
 }
+func HotUsersApi(w http.ResponseWriter, r *http.Request)  {
+	Users, err := HotUsers()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(Users)
+}
 func LoginUser(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 	email:= vars["email"]

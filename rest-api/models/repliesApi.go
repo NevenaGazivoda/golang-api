@@ -17,7 +17,17 @@ func RepliesIndex(w http.ResponseWriter, r *http.Request)  {
 	}
 	json.NewEncoder(w).Encode(Replies)
 }
-
+func GetRepliesByQuestionId(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	id:= vars["id"]
+	Replies, err := RepliesByQuestionId(id)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(Replies)
+}
 func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
 	vars := mux.Vars(r)
 

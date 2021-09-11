@@ -16,8 +16,9 @@ type QuestionHot struct {
 	Fk_UserId string `json:"fk_UserId"`
 	ReactionCount string `json:"reaction_count"`
 }
-type Questions []Question
 
+type Questions []Question
+var paging = 20
 func AllQuestions ()([]Question, error)  {
 
 	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions")
@@ -68,9 +69,50 @@ func HotQuestions ()([]QuestionHot, error)  {
 	}
 	return Questions, err
 }
+func QuestionById(id string)(Question)  {
+
+	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId FROM `questions` WHERE Pk_QuestionId = ?", id)
+	if err != nil {
+		panic(err.Error())
+	}
+	var quest Question
+	for results.Next() {
+
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+	return quest
+}
 func QuestionPaging (n int)([]Question, error)  {
 
-	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions LIMIT 5 OFFSET ?", (n-1)*5)
+	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions ORDER BY Pk_QuestionId DESC LIMIT ? OFFSET ?", paging,(n-1)*5)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var Questions []Question
+
+	for results.Next()	{
+		var quest Question
+
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		Questions = append(Questions, quest)
+	}
+	if err = results.Err(); err != nil {
+		return nil, err
+	}
+	return Questions, err
+}
+
+func GetQuestionsByUserId (id string, n int)([]Question, error)  {
+
+	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions WHERE Fk_UserId = ? ORDER BY Pk_QuestionId DESC LIMIT ? OFFSET ?", id,paging, (n-1)*5)
 	if err != nil {
 		panic(err.Error())
 	}
