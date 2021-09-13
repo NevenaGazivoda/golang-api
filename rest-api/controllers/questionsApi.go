@@ -11,6 +11,7 @@ import (
 )
 
 func QuestionsIndex(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	Questions, err := models.AllQuestions()
 	if err != nil {
 		log.Println(err)
@@ -20,6 +21,7 @@ func QuestionsIndex(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Questions)
 }
 func HotQuestionsApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	Questions, err := models.HotQuestions()
 	if err != nil {
 		log.Println(err)
@@ -29,12 +31,14 @@ func HotQuestionsApi(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Questions)
 }
 func GetQuestionById(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	vars := mux.Vars(r)
 	id:= vars["id"]
 
 	json.NewEncoder(w).Encode(models.QuestionById(id))
 }
 func QuestionsPagingApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	vars := mux.Vars(r)
 	n, err := strconv.Atoi(vars["n"])
 
@@ -47,6 +51,8 @@ func QuestionsPagingApi(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Questions)
 }
 func GetQuestionsByUserIdApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
+
 	vars := mux.Vars(r)
 
 	id:= vars["id"]
@@ -62,6 +68,8 @@ func GetQuestionsByUserIdApi(w http.ResponseWriter, r *http.Request)  {
 }
 
 func DeleteFromQuestions(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
+
 	vars := mux.Vars(r)
 
 	id:= vars["id"]
@@ -69,6 +77,7 @@ func DeleteFromQuestions(w http.ResponseWriter, r *http.Request)  {
 	models.DeleteQuestion(id)
 }
 func CreateNewQuestion(w http.ResponseWriter, r *http.Request) {
+	SetupCorsResponse(&w, r)
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -80,6 +89,7 @@ func CreateNewQuestion(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(quest)
 }
 func UpdateQuestionApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 
 	var quest models.Question
 	_ = json.NewDecoder(r.Body).Decode(&quest)

@@ -10,6 +10,7 @@ import (
 )
 
 func RepliesIndex(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	Replies, err := models.AllReplies()
 	if err != nil {
 		log.Println(err)
@@ -19,6 +20,7 @@ func RepliesIndex(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Replies)
 }
 func GetRepliesByQuestionId(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	vars := mux.Vars(r)
 	id:= vars["id"]
 	Replies, err := models.RepliesByQuestionId(id)
@@ -30,6 +32,7 @@ func GetRepliesByQuestionId(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Replies)
 }
 func GetReplyByIdApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	vars := mux.Vars(r)
 
 	id:= vars["id"]
@@ -37,6 +40,7 @@ func GetReplyByIdApi(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(models.ReplyById(id))
 }
 func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 	vars := mux.Vars(r)
 
 	id:= vars["id"]
@@ -44,6 +48,7 @@ func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
 	models.DeleteReply(id)
 }
 func CreateNewReply(w http.ResponseWriter, r *http.Request) {
+	SetupCorsResponse(&w, r)
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -55,6 +60,7 @@ func CreateNewReply(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(rep)
 }
 func UpdateReplyApi(w http.ResponseWriter, r *http.Request)  {
+	SetupCorsResponse(&w, r)
 
 	var rep models.Reply
 	_ = json.NewDecoder(r.Body).Decode(&rep)

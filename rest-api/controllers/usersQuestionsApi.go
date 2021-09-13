@@ -7,6 +7,7 @@ import (
 )
 
 func CreateReaction(w http.ResponseWriter, r *http.Request) {
+	SetupCorsResponse(&w, r)
 
 	w.Header().Set("Content-Type", "application/json")
 
