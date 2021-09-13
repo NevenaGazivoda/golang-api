@@ -12,7 +12,7 @@ func HandleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/users", controllers.UsersIndex).Methods("GET")
 	myRouter.HandleFunc("/users/hot", controllers.HotUsersApi).Methods("GET")
-	myRouter.HandleFunc("/users/{email}/{password}", controllers.LoginUser).Methods("GET")
+	myRouter.HandleFunc("/user/login", controllers.LoginUser).Methods("POST")
 	myRouter.HandleFunc("/users/{id}", controllers.GetUserById).Methods("GET")
 	myRouter.HandleFunc("/users", controllers.CreateNewUser).Methods("POST")
 	myRouter.HandleFunc("/users/{id}", controllers.DeleteFromUsers).Methods("DELETE")
@@ -37,5 +37,5 @@ func HandleRequests() {
 
 	myRouter.HandleFunc("/usersquestions", controllers.CreateReaction).Methods("POST")
 	myRouter.HandleFunc("/usersreplies", controllers.InsertNewReaction).Methods("POST")
-	log.Fatal(http.ListenAndServe(":8082", myRouter))
+	log.Fatal(http.ListenAndServe(":3000", myRouter))
 }

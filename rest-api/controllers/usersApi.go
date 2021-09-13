@@ -28,11 +28,13 @@ func HotUsersApi(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(Users)
 }
 func LoginUser(w http.ResponseWriter, r *http.Request)  {
-	vars := mux.Vars(r)
-	email:= vars["email"]
-	password:= vars["password"]
+	w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(models.OneUser(email,password))
+	var us models.LogUser
+	_ = json.NewDecoder(r.Body).Decode(&us)
+
+
+	json.NewEncoder(w).Encode(models.OneUser(us.Email,us.Password))
 }
 
 

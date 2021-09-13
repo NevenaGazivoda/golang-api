@@ -23,6 +23,10 @@ type HotUser struct {
 	Surname string `json:"surname"`
 	CommentCount string `json:"comment_count"`
 }
+type LogUser struct {
+	Email string `json:"email"`
+	Password string `json:"password"`
+}
 
 type Users []User
 
