@@ -50,8 +50,6 @@ func DeleteFromReplies(w http.ResponseWriter, r *http.Request)  {
 func CreateNewReply(w http.ResponseWriter, r *http.Request) {
 	SetupCorsResponse(&w, r)
 
-	w.Header().Set("Content-Type", "application/json")
-
 	var rep models.Reply
 	_ = json.NewDecoder(r.Body).Decode(&rep)
 

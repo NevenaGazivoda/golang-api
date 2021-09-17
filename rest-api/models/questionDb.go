@@ -53,7 +53,7 @@ func AllQuestions ()([]Question, error)  {
 func HotQuestions ()([]QuestionHot, error)  {
 
 	results, err := DB.Query("SELECT q.Pk_QuestionId, q.Text, q.Fk_UserId, COUNT(l.Pk_UserQuestionId) as Hotest " +
-		"FROM questions AS q JOIN usersquestions AS l ON q.Pk_QuestionId = l.Fk_QuestionId " +
+		"FROM questions AS q JOIN usersquestions AS l ON q.Pk_QuestionId = l.Fk_QuestionId and l.Reaction = 1 " +
 		"GROUP BY q.Pk_QuestionId, q.Text, q.Fk_UserId ORDER BY hotest DESC LIMIT 5 OFFSET 0")
 	if err != nil {
 		panic(err.Error())
@@ -76,16 +76,21 @@ func HotQuestions ()([]QuestionHot, error)  {
 	}
 	return Questions, err
 }
-func QuestionById(id string)(Question)  {
+func QuestionById(id string)(QuestionWithLikes)  {
 
-	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId FROM `questions` WHERE Pk_QuestionId = ?", id)
+	results, err := DB.Query("SELECT q.Pk_QuestionId, q.Text, q.Fk_UserId, " +
+		"SUM(IF(up.Reaction = 1, 1, 0)) AS positive, SUM(IF(up.Reaction = 0, 1, 0)) AS negative " +
+		"FROM `questions` as q " +
+		"LEFT JOIN usersquestions AS up ON q.Pk_QuestionId = up.Fk_QuestionId " +
+		"WHERE Pk_QuestionId = ? " +
+		"GROUP BY q.Pk_QuestionId, q.Text, q.Fk_UserId", id)
 	if err != nil {
 		panic(err.Error())
 	}
-	var quest Question
+	var quest QuestionWithLikes
 	for results.Next() {
 
-		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId, &quest.Positive, &quest.Negative)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -121,19 +126,19 @@ func QuestionPaging (n int)([]QuestionWithLikes, error)  {
 	return Questions, err
 }
 
-func GetQuestionsByUserId (id string, n int)([]Question, error)  {
+func GetQuestionsByUserId (id string, n int)([]QuestionWithLikes, error)  {
 
-	results, err := DB.Query("SELECT Pk_QuestionId, Text, Fk_UserId from Questions WHERE Fk_UserId = ? ORDER BY Pk_QuestionId DESC LIMIT ? OFFSET ?", id,paging, (n-1)*5)
+	results, err := DB.Query("SELECT q.Pk_QuestionId, q.Text, q.Fk_UserId, SUM(IF(up.Reaction = 1, 1, 0)) AS positive, SUM(IF(up.Reaction = 0, 1, 0)) AS negative from Questions as q LEFT JOIN usersquestions AS up ON q.Pk_QuestionId = up.Fk_QuestionId WHERE q.Fk_UserId = ? GROUP BY q.Pk_QuestionId, q.Text, q.Fk_UserId ORDER BY q.Pk_QuestionId DESC LIMIT ? OFFSET ?", id,paging, (n-1)*paging)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	var Questions []Question
+	var Questions []QuestionWithLikes
 
 	for results.Next()	{
-		var quest Question
+		var quest QuestionWithLikes
 
-		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId)
+		err = results.Scan(&quest.Pk_QuestionId, &quest.Text, &quest.Fk_UserId, &quest.Positive, &quest.Negative)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -162,7 +167,8 @@ func NewQuestion (quest Question) () {
 	}
 }
 func UpdateQuestion (quest Question) () {
-	query := fmt.Sprintf("UPDATE `Questions` SET `Text`= '%s', `Fk_UserId`= '%s' WHERE Pk_QuestionId= %s", quest.Text, quest.Fk_UserId, quest.Pk_QuestionId)
+	query := fmt.Sprintf("UPDATE `Questions` SET `Text`= '%s' WHERE Pk_QuestionId= %s", quest.Text,quest.Pk_QuestionId)
+
 	_, err := DB.Query(query)
 	if err != nil {
 		panic(err.Error())

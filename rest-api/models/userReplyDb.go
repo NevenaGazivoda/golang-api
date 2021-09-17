@@ -9,7 +9,7 @@ type UserReply struct {
 	Fk_ReplyId string `json:"fk_ReplyId"`
 }
 
-func NewReactionOnReply(react UserReply)  {
+func NewReactionOnReply(react UserReply)(ReplyWithReaction)  {
 	results, err := DB.Query("SELECT Pk_UserReplyId FROM `usersreplies` WHERE Fk_UserId = ? AND Fk_ReplyId =?", react.Fk_UserId, react.Fk_ReplyId)
 	if err != nil {
 		panic(err.Error())
@@ -36,5 +36,7 @@ func NewReactionOnReply(react UserReply)  {
 			panic(err.Error())
 		}
 	}
+	replyNow := ReplyById(react.Fk_ReplyId)
 
+	return replyNow
 }

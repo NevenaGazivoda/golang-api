@@ -68,14 +68,14 @@ func NewUser (us User) () {
 func OneUser(email string, password string)(User)  {
 	hash := md5.Sum([]byte(password))
 	hashedPass := hex.EncodeToString(hash[:])
-	results, err := DB.Query("SELECT Name, Surname, Email, Password FROM `users` WHERE Email = ? AND Password =?", email, hashedPass)
+	results, err := DB.Query("SELECT Pk_UserId, Name, Surname, Email, Password FROM `users` WHERE Email = ? AND Password =?", email, hashedPass)
 	if err != nil {
 		panic(err.Error())
 	}
 	var us User
 	for results.Next() {
 
-		err = results.Scan(&us.Name, &us.Surname, &us.Email, &us.Password)
+		err = results.Scan(&us.Pk_UserId, &us.Name, &us.Surname, &us.Email, &us.Password)
 		if err != nil {
 			panic(err.Error())
 		}

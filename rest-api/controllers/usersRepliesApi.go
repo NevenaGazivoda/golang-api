@@ -15,8 +15,8 @@ func InsertNewReaction(w http.ResponseWriter, r *http.Request) {
 	var react models.UserReply
 	_ = json.NewDecoder(r.Body).Decode(&react)
 
-	models.NewReactionOnReply(react)
+	replyNow := models.NewReactionOnReply(react)
 
-	json.NewEncoder(w).Encode(react)
+	json.NewEncoder(w).Encode(replyNow)
 }
 

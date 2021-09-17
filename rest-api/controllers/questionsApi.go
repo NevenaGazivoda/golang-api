@@ -23,6 +23,7 @@ func QuestionsIndex(w http.ResponseWriter, r *http.Request)  {
 func HotQuestionsApi(w http.ResponseWriter, r *http.Request)  {
 	SetupCorsResponse(&w, r)
 	Questions, err := models.HotQuestions()
+
 	if err != nil {
 		log.Println(err)
 		http.Error(w, http.StatusText(500), 500)

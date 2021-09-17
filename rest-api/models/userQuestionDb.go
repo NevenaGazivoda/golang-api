@@ -9,7 +9,7 @@ type UserQuestion struct {
 	Fk_QuestionId string `json:"fk_QuestionId"`
 }
 
-func InsertReaction(reac UserQuestion) {
+func InsertReaction(reac UserQuestion)(QuestionWithLikes) {
 	results, err := DB.Query("SELECT Pk_UserQuestionId FROM `usersquestions` WHERE Fk_UserId = ? AND Fk_QuestionId =?", reac.Fk_UserId, reac.Fk_QuestionId)
 	if err != nil {
 		panic(err.Error())
@@ -37,4 +37,6 @@ func InsertReaction(reac UserQuestion) {
 			panic(err.Error())
 		}
 	}
+	queeee := QuestionById(reac.Fk_QuestionId)
+	return queeee
 }

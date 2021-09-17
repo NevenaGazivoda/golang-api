@@ -48,8 +48,8 @@ func AllReplies ()([]Reply, error)  {
 func RepliesByQuestionId(id string)([]ReplyWithReaction, error)  {
 
 	results, err := DB.Query("SELECT r.Pk_ReplyId, r.Text, r.Fk_UserId, r.Fk_QuestionId, SUM(IF(u.Reaction = 1, 1, 0)) AS positive, " +
-		"SUM(IF(u.Reaction = 0, 1, 0)) AS negative FROM replies as r JOIN usersreplies as u " +
-		"ON u.Fk_ReplyId=r.Pk_ReplyId WHERE Fk_QuestionId = ?", id)
+		"SUM(IF(u.Reaction = 0, 1, 0)) AS negative FROM replies as r LEFT JOIN usersreplies as u " +
+		"ON u.Fk_ReplyId=r.Pk_ReplyId WHERE Fk_QuestionId = ? GROUP BY r.Pk_ReplyId, r.Text, r.Fk_UserId, r.Fk_QuestionId", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -57,9 +57,10 @@ func RepliesByQuestionId(id string)([]ReplyWithReaction, error)  {
 	var Replies []ReplyWithReaction
 	for results.Next() {
 		var rep ReplyWithReaction
+
 		err = results.Scan(&rep.Pk_ReplyId, &rep.Text, &rep.Fk_UserId, &rep.Fk_QuestionId, &rep.Positive, &rep.Negative)
 		if err != nil {
-			panic(err.Error())
+			return Replies, nil
 		}
 		Replies = append(Replies, rep)
 		if err = results.Err(); err != nil {
@@ -71,7 +72,7 @@ func RepliesByQuestionId(id string)([]ReplyWithReaction, error)  {
 func ReplyById(id string)(ReplyWithReaction)  {
 
 	results, err := DB.Query("SELECT r.Pk_ReplyId, r.Text, r.Fk_UserId, r.Fk_QuestionId, SUM(IF(u.Reaction = 1, 1, 0)) AS positive, " +
-		"SUM(IF(u.Reaction = 0, 1, 0)) AS negative FROM replies as r JOIN usersreplies as u " +
+		"SUM(IF(u.Reaction = 0, 1, 0)) AS negative FROM replies as r LEFT JOIN usersreplies as u " +
 		"ON u.Fk_ReplyId=r.Pk_ReplyId WHERE r.Pk_ReplyId = ?", id)
 	if err != nil {
 		panic(err.Error())
@@ -95,7 +96,6 @@ func DeleteReply(id string)()  {
 }
 
 func NewReply (rep Reply) () {
-
 	query := fmt.Sprintf("INSERT INTO `replies`(`Text`, `Fk_UserId`,`Fk_QuestionId`) VALUES ('%s', '%s', '%s')", rep.Text,rep.Fk_UserId, rep.Fk_QuestionId)
 
 	_, err := DB.Query(query)
@@ -104,7 +104,7 @@ func NewReply (rep Reply) () {
 	}
 }
 func UpdateReply (rep Reply) () {
-	query := fmt.Sprintf("UPDATE `replies` SET `Text`= '%s', `Fk_UserId`= '%s',`Fk_QuestionId`='%s' WHERE Pk_ReplyId= %s", rep.Text, rep.Fk_UserId, rep.Fk_QuestionId, rep.Pk_ReplyId)
+	query := fmt.Sprintf("UPDATE `replies` SET `Text`= '%s' WHERE Pk_ReplyId= %s", rep.Text, rep.Pk_ReplyId)
 	_, err := DB.Query(query)
 	if err != nil {
 		panic(err.Error())
