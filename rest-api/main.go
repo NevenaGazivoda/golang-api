@@ -13,7 +13,7 @@ import (
 
 func main() {
 	var err error
-	models.DB, err = sql.Open("mysql", "root:@/askme")
+	models.DB, err = sql.Open("mysql", "b98596e349cebb:44eef99c@tcp(eu-cdbr-west-01.cleardb.com:3306)/heroku_25f2eb43c0767f3")
 
 
 	if err != nil {

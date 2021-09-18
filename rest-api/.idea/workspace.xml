@@ -7,8 +7,7 @@
     <list default="true" id="114a6d97-e576-4428-9e13-0d4f2f1c140a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../.vs/AskMe/v15/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/AskMe/v15/.suo" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.vs/slnx.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/slnx.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/usersApi.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/usersApi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +80,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
