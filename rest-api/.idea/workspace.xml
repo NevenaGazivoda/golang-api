@@ -5,9 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="114a6d97-e576-4428-9e13-0d4f2f1c140a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/my-tutorial.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.vs/AskMe/v15/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/AskMe/v15/.suo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/AskMe/v16/.suo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/my-tutorial/v16/.suo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vs/my-tutorial1/v16/.suo" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../.vs/slnx.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/slnx.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/rest-api-tutorial.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/questionsApi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/repliesApi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/responseSetup.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/usersApi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/usersQuestionsApi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/usersRepliesApi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/questionDb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/replyDb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/userDb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/userQuestionDb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/userReplyDb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest-api-tutorial.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +66,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RunManager">
