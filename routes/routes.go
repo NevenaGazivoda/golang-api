@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"fmt"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"rest/controllers"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func HandleRequests() {
@@ -54,11 +54,7 @@ func HandleRequests() {
 		log.Printf("Error converting $REPEAT to an int: %q - Using default\n", err)
 		repeat = 5
 	}
-	fmt.Println(port)
-	log.Printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	log.Printf(port)
 	log.Fatal(http.ListenAndServe(":"+port, myRouter))
-	log.Printf("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-	log.Printf("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
 	log.Fatal(repeat)
 }
