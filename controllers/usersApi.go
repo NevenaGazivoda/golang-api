@@ -11,6 +11,7 @@ import (
 
 func UsersIndex(w http.ResponseWriter, r *http.Request)  {
 	SetupCorsResponse(&w, r)
+	log.Printf("AAAAAAAAAAA");
 	Users, err := models.AllUsers()
 	if err != nil {
 		log.Println(err)
