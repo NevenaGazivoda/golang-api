@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"log"
@@ -35,7 +34,6 @@ func LoginUser(w http.ResponseWriter, r *http.Request)  {
 	SetupCorsResponse(&w, r)
 	var us models.LogUser
 	_ = json.NewDecoder(r.Body).Decode(&us)
-	fmt.Println(us)
 
 	json.NewEncoder(w).Encode(models.OneUser(us.Email,us.Password))
 }
